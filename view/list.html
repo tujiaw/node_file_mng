@@ -2,23 +2,23 @@
   <ul class="list-group">
     <li class="list-group-item">
         <div class="row">
-            <div class=""><input type="checkbox" /></div>
+            <div class="" style="margin-left: 20px"><input type="checkbox" /></div>
             <div class="col-auto">Type</div>
             <div class="col-auto mr-auto">Name</div>
-            <div class="col-auto" style="margin-right:20px;">Size</div>
-            <div class="col-auto" style="margin-right:125px;">Time</div>
+            <div class="col-sm-1">Size</div>
+            <div class="col-sm-3">Time</div>
           </div>
     </li>
     <% files.forEach(function(file) { %>
       <li class="list-group-item">
         <div class="row">
-          <div class=""><input type="checkbox" /></div>
+          <div class="" style="margin-left: 20px"><input type="checkbox" /></div>
           <div class="col-auto">
-              <span class="oi oi-document" title="icon name" aria-hidden="true" style="margin-left:10px;margin-right:10px;"></span>
+            <span class="oi <%= file.type %>" title="<%= file.type %>" aria-hidden="true" style="margin-left:10px;"></span>
           </div>
-          <div class="col-auto mr-auto"><a href="https://ningto.com"><%= file.name %></a></div>
-          <div class="col-auto">48.6669KB</div>
-          <div class="col-auto">2018/1/18 下午5:16:46</div>
+          <div class="col-auto mr-auto"><a href="<%= file.path %>"><%= file.name %></a></div>
+          <div class="col-sm-1"><%= file.size %></div>
+          <div class="col-sm-3"><%= file.time %></div>
         </div>
       </li>
     <% }) %>
