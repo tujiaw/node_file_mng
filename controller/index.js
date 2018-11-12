@@ -15,7 +15,7 @@ async function handleFiles(ctx, handlder) {
         const fullpath = path.join(downloadDir, file)
         await handlder(fullpath)
       }
-      return { }
+      return {success: true }
     } catch (err) {
       return { error: err }
     }
@@ -54,12 +54,19 @@ exports.upload = async function(ctx) {
   try {
     const referer = ctx.request.header.referer
     if (referer && referer.length) {
-      const file = ctx.request.files.file
-      const dstPath = path.join(downloadDir, url.parse(referer).path, file.name)
-      console.log(`upload from:${file.path}, to:${dstPath}`)
-      const reader = fs.createReadStream(file.path)
-      const stream = fs.createWriteStream(dstPath)
-      await waitpipe(reader, stream)
+      let fileList = []
+      if (Array.isArray(ctx.request.files.file)) {
+        fileList = ctx.request.files.file
+      } else {
+        fileList.push(ctx.request.files.file)
+      }
+      for (const file of fileList) {
+        const dstPath = path.join(downloadDir, url.parse(referer).path, file.name)
+        console.log(`upload from:${file.path}, to:${dstPath}`)
+        const reader = fs.createReadStream(file.path)
+        const stream = fs.createWriteStream(dstPath)
+        await waitpipe(reader, stream)
+      }
       ctx.redirect(referer)
     } else {
       ctx.body = { error: 'referer error' }  
