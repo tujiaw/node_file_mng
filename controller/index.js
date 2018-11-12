@@ -3,6 +3,7 @@ const fs = require("bluebird").promisifyAll(require('fs'))
 const moment = require('moment')
 const util = require('../common/util')
 const send = require('koa-send')
+const url = require('url');
 
 const downloadDir = path.join(__dirname, '..', 'download')
 
@@ -23,6 +24,16 @@ async function handleFiles(ctx, handlder) {
   }
 }
 
+async function waitpipe(reader, writer) {
+  return new Promise((resolve, reject) => {
+    reader.pipe(writer, { end: false})
+    reader.on('end', () => {
+      resolve()
+    })
+  })
+  
+}
+
 exports.download = async function(ctx, name) {
   console.log(name)
   if (name && name.length) {
@@ -37,6 +48,25 @@ exports.delete = async function(ctx) {
   ctx.body = await handleFiles(ctx, async (fullpath) => {
     await util.rm_rf(fullpath)
   })
+}
+
+exports.upload = async function(ctx) {
+  try {
+    const referer = ctx.request.header.referer
+    if (referer && referer.length) {
+      const file = ctx.request.files.file
+      const dstPath = path.join(downloadDir, url.parse(referer).path, file.name)
+      console.log(`upload from:${file.path}, to:${dstPath}`)
+      const reader = fs.createReadStream(file.path)
+      const stream = fs.createWriteStream(dstPath)
+      await waitpipe(reader, stream)
+      ctx.redirect(referer)
+    } else {
+      ctx.body = { error: 'referer error' }  
+    }
+  } catch (err) {
+    ctx.body = { error: err }
+  }
 }
 
 exports.main = async function(ctx) {

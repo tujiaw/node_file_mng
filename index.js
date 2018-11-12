@@ -1,13 +1,13 @@
 const Koa = require('koa')
 const Router = require('koa-router')
 const render = require('koa-ejs')
-const parser = require('koa-bodyparser');
+const body = require('koa-body');
 const path = require('path')
 const app = new Koa()
 const router = new Router()
 const controller = require('./controller')
 
-app.use(parser())
+app.use(body({ multipart: true }))
 render(app, {
   root: path.join(__dirname, 'view'),
   layout: 'template',
@@ -18,8 +18,8 @@ render(app, {
 
 const publicDir = path.join(__dirname, 'public')
 app.use(require('koa-static')(publicDir))
-// router.get('/download:name', controller.download)
 router.post('/delete', controller.delete)
+router.post('/upload', controller.upload)
 app.use(router.routes()).use(router.allowedMethods())
 app.use(controller.main)
 

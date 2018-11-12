@@ -77,10 +77,4 @@ $('#delete').click(function() {
     }
 })
 
-$('#upload').click(function() {
-    $('#file').trigger('click')
-})
-
-function getFilePath() {
-    console.log($('#file').val())
-}
+$('#referrer').val(document.referrer);
