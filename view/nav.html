@@ -1,0 +1,10 @@
+<div class="fixed-top">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <% nav.forEach(function(item) { %>
+      <li class="breadcrumb-item"><a href="<%= item.path %>">
+          <%= item.name %></a></li>
+      <% }) %>
+    </ol>
+  </nav>
+</div>

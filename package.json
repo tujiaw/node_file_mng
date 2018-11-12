@@ -18,10 +18,14 @@
   },
   "homepage": "https://github.com/tujiaw/node_file_mng#readme",
   "dependencies": {
+    "bluebird": "^3.5.3",
     "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
     "koa-ejs": "^4.1.2",
     "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "rimraf": "^2.6.2"
   }
 }

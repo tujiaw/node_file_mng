@@ -1,8 +1,22 @@
+<div class="container row" style="margin-top: 60px; margin-bottom: 10px;">
+    <div class="col-auto mr-auto">
+        <button type="button" class="btn btn-secondary" id="download">Download</button>
+        <button type="button" class="btn btn-danger" id="delete">Delete</button>
+        <button type="button" class="btn btn-secondary" id="move">Move</button>
+        <button type="button" class="btn btn-secondary" id="rename">Rename</button>
+    </div>
+    <input type="file" id="file" onchange="getFilePath()" style="filter:alpha(opacity=0);opacity:0;width: 0;height: 0;"/>
+    <div class="col-auto">
+      <button type="button" class="btn btn-primary" id="upload">Upload</button>
+      <button type="button" class="btn btn-primary" id="new_folder">New Folder</button>
+    </div>
+  </div>
+
 <div>
   <ul class="list-group">
     <li class="list-group-item">
         <div class="row">
-            <div class="" style="margin-left: 20px"><input type="checkbox" /></div>
+            <div class="" style="margin-left: 20px"><input class="selectAll" type="checkbox" /></div>
             <div class="col-auto">Type</div>
             <div class="col-auto mr-auto">Name</div>
             <div class="col-sm-1">Size</div>
@@ -11,8 +25,8 @@
     </li>
     <% files.forEach(function(file) { %>
       <li class="list-group-item">
-        <div class="row">
-          <div class="" style="margin-left: 20px"><input type="checkbox" /></div>
+        <div class="row file-row" isdir=<%= file.isDir %> >
+          <div class="" style="margin-left: 20px"><input class="select" type="checkbox" /></div>
           <div class="col-auto">
             <span class="oi <%= file.type %>" title="<%= file.type %>" aria-hidden="true" style="margin-left:10px;"></span>
           </div>
