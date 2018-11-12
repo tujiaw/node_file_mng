@@ -31,12 +31,12 @@ async function waitpipe(reader, writer) {
       resolve()
     })
   })
-  
 }
 
 exports.download = async function(ctx, name) {
   console.log(name)
   if (name && name.length) {
+    name = decodeURIComponent(name)
     ctx.attachment(name)
     await send(ctx, name, { root: downloadDir })
   } else {
@@ -63,8 +63,8 @@ exports.upload = async function(ctx) {
       for (const file of fileList) {
         const dstPath = path.join(downloadDir, url.parse(referer).path, file.name)
         console.log(`upload from:${file.path}, to:${dstPath}`)
-        const reader = fs.createReadStream(file.path)
-        const stream = fs.createWriteStream(dstPath)
+        const reader = fs.createReadStream(decodeURIComponent(file.path))
+        const stream = fs.createWriteStream(decodeURIComponent(dstPath))
         await waitpipe(reader, stream)
       }
       ctx.redirect(referer)
@@ -76,11 +76,30 @@ exports.upload = async function(ctx) {
   }
 }
 
+exports.new = async function(ctx) {
+  try {
+    const referer = ctx.request.header.referer
+    if (referer && referer.length) {
+      const name = ctx.request.body.name
+      if (name && name.length) {
+        const dstPath = path.join(downloadDir, url.parse(referer).path, name)
+        await fs.mkdirSync(decodeURIComponent(dstPath))
+      }
+      ctx.redirect(referer)
+    } else {
+      ctx.body = { error: 'referer error' }  
+    }
+  } catch (err) {
+    ctx.body = { error: err }
+  }
+}
+
 exports.main = async function(ctx) {
-    const curPath = path.join(downloadDir, ctx.path)
+    const curPath = decodeURIComponent(path.join(downloadDir, ctx.path))
     console.log(curPath)
     const curStat = await fs.lstatAsync(curPath)
     if (curStat.isFile()) {
+      console.log('download', ctx.path)
       ctx.attachment(ctx.path)
       await send(ctx, ctx.path, { root: downloadDir })
     } else if (curStat.isDirectory()) {
@@ -91,7 +110,7 @@ exports.main = async function(ctx) {
         if (stat.isFile() || stat.isDirectory()) {
           files.push({
             name: name,
-            path: path.join(ctx.path, name),
+            path: decodeURIComponent(path.join(ctx.path, name)),
             type: stat.isFile() ? "oi-document" : "oi-folder",
             isDir: stat.isDirectory(),
             size: util.sizeFormat(stat.size),

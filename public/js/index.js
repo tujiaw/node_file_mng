@@ -12,6 +12,7 @@ function updateButtonsStatus() {
     })
     $('#download').prop('disabled', dirCount > 0 || fileCount === 0)
     $('#delete').prop('disabled', dirCount === 0 && fileCount === 0)
+    $('#rename').prop('disabled', (dirCount + fileCount) !== 1)
 }
 
 $('.selectAll').change(function() {
@@ -35,7 +36,9 @@ function getSelectFiles() {
 }
 
 function download(url) {
-    const name = url.substr(url.lastIndexOf('\\') + 1)
+    let start = url.lastIndexOf('\\')
+    start = start < 0 ? url.lastIndexOf('/') : start
+    const name = url.substr(start + 1)
     fetch(url)
     .then(response => response.blob())
     .then(blob => {
@@ -77,4 +80,4 @@ $('#delete').click(function() {
     }
 })
 
-$('#referrer').val(document.referrer);
+$('.referrer').val(document.referrer);
