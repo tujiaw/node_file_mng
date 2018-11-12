@@ -100,8 +100,9 @@ exports.main = async function(ctx) {
     const curStat = await fs.lstatAsync(curPath)
     if (curStat.isFile()) {
       console.log('download', ctx.path)
-      ctx.attachment(ctx.path)
-      await send(ctx, ctx.path, { root: downloadDir })
+      const sendpath = decodeURIComponent(ctx.path)
+      ctx.attachment(sendpath)
+      await send(ctx, sendpath, { root: downloadDir })
     } else if (curStat.isDirectory()) {
       const nameList = await fs.readdirAsync(curPath)
       const files = []
