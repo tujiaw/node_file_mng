@@ -8,6 +8,7 @@ function updateButtonsStatus() {
             } else {
                 dirCount++
             }
+            $('.frompath').val($(this).find('a').attr('href'))
         }
     })
     $('#download').prop('disabled', dirCount > 0 || fileCount === 0)
@@ -78,6 +79,13 @@ $('#delete').click(function() {
             alert(err)
         })
     }
+})
+
+$('#rename').click(function() {
+    let name = $('.frompath').val()
+    let start = (name.lastIndexOf('\\') >= 0 ? name.lastIndexOf('\\') : name.lastIndexOf('/')) + 1
+    $('#renameInput').val(name.substr(start))
+    return true
 })
 
 $('.referrer').val(document.referrer);

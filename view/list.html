@@ -1,13 +1,14 @@
+<% include renameModal.html %>
+<% include uploadModal.html %>
+<% include newModal.html %>
 <div class="container row" style="margin-top: 60px; margin-bottom: 10px;">
     <div class="col-auto mr-auto">
         <button type="button" class="btn btn-secondary" id="download">Download</button>
         <button type="button" class="btn btn-danger" id="delete">Delete</button>
         <button type="button" class="btn btn-secondary" id="move">Move</button>
-        <button type="button" class="btn btn-secondary" id="rename">Rename</button>
+        <button type="button" class="btn btn-secondary" id="rename" data-toggle="modal" data-target="#renameModal">Rename</button>
     </div>
     <div class="col-auto">
-      <% include uploadModal.html %>
-      <% include newModal.html %>
       <button type="button" class="btn btn-primary" id="upload" data-toggle="modal" data-target="#uploadModal">Upload</button>
       <button type="button" class="btn btn-primary" id="new" data-toggle="modal" data-target="#newModal">New Folder</button>
     </div>

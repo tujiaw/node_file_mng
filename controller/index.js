@@ -24,12 +24,16 @@ async function handleFiles(ctx, handlder) {
   }
 }
 
-async function waitpipe(reader, writer) {
+async function promisePipe(reader, writer) {
   return new Promise((resolve, reject) => {
-    reader.pipe(writer, { end: false})
-    reader.on('end', () => {
-      resolve()
-    })
+    try {
+      reader.pipe(writer)
+      reader.on('end', () => {
+        resolve()
+      })
+    } catch (err) {
+      reject(err)
+    }
   })
 }
 
@@ -65,7 +69,7 @@ exports.upload = async function(ctx) {
         console.log(`upload from:${file.path}, to:${dstPath}`)
         const reader = fs.createReadStream(decodeURIComponent(file.path))
         const stream = fs.createWriteStream(decodeURIComponent(dstPath))
-        await waitpipe(reader, stream)
+        await promisePipe(reader, stream)
       }
       ctx.redirect(referer)
     } else {
@@ -84,6 +88,26 @@ exports.new = async function(ctx) {
       if (name && name.length) {
         const dstPath = path.join(downloadDir, url.parse(referer).path, name)
         await fs.mkdirSync(decodeURIComponent(dstPath))
+      }
+      ctx.redirect(referer)
+    } else {
+      ctx.body = { error: 'referer error' }  
+    }
+  } catch (err) {
+    ctx.body = { error: err }
+  }
+}
+
+exports.rename = async function(ctx) {
+  try {
+    const referer = ctx.request.header.referer
+    if (referer && referer.length) {
+      let frompath = ctx.request.body.frompath
+      const name = ctx.request.body.name
+      if (frompath && frompath.length && name && name.length) {
+        frompath = path.join(downloadDir, frompath)
+        const topath = path.join(path.dirname(frompath), name)
+        await fs.renameAsync(decodeURIComponent(frompath), decodeURIComponent(topath))
       }
       ctx.redirect(referer)
     } else {

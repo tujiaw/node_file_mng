@@ -17,18 +17,12 @@ exports.sizeFormat = function(size) {
 
 exports.rm_rf = async function(path) {
     return new Promise((resolve, reject) => {
-        const stat = fs.lstatSync(path)
-        if (stat.isFile()) {
-            fs.unlinkSync(path)
-            resolve()
-        } else {
-            rimraf(path, function(err) {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve()
-                }
-            })
-        }
+        rimraf(path, function(err) {
+            if (err) {
+                reject(err)
+            } else {
+                resolve()
+            }
+        })
     })
 }
