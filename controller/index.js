@@ -69,14 +69,28 @@ class FileSort {
   }
 
   sort(files, type, order) {
+    const strComp = function(a, b) {
+      a = a.toLowerCase()
+      b = b.toLowerCase()
+      if (a < b) {
+        return (order === 'asc') ? -1 : 1
+      } else if (a > b) {
+        return (order === 'asc') ? 1 : -1
+      }
+      return 0
+    }
+    const intComp = function(a, b) {
+      return order === 'asc' ? a - b : b - a
+    }
+
     if (type === 'type') {
-      files.sort((a, b) => { return order==='asc' ? (a.type > b.type) : (a.type < b.type) })
+      files.sort((a, b) => strComp(a.type, b.type))
     } else if (type === 'name') {
-      files.sort((a, b) => { return order==='asc' ? (a.name > b.name) : (a.name < b.name) })
+      files.sort((a, b) => strComp(a.name, b.name))
     } else if (type === 'size') {
-      files.sort((a, b) => { return order==='asc' ? (a.byte > b.byte) : (a.byte < b.byte) })
+      files.sort((a, b) => intComp(a.byte, b.byte))
     } else if (type === 'time') {
-      files.sort((a, b) => { return order==='asc' ? (a.time > b.time) : (a.time < b.time) })
+      files.sort((a, b) => strComp(a.time, b.time))
     }
   }
 }
