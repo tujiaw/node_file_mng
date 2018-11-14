@@ -14,6 +14,7 @@ function updateButtonsStatus() {
     $('#download').prop('disabled', dirCount > 0 || fileCount === 0)
     $('#delete').prop('disabled', dirCount === 0 && fileCount === 0)
     $('#rename').prop('disabled', (dirCount + fileCount) !== 1)
+    $('#move').prop('disabled', (dirCount + fileCount) !== 1)
 }
 
 $('.selectAll').change(function() {
@@ -81,6 +82,12 @@ $('#delete').click(function() {
             })
         }
     }
+})
+
+$('#move').click(function() {
+    let frompath = $('.frompath').val()
+    $('#moveInput').val(frompath.replace(/\\/g, '/'))
+    return true
 })
 
 $('#rename').click(function() {

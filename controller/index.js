@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require("bluebird").promisifyAll(require('fs'))
+const fs = require('fs-extra')
 const moment = require('moment')
 const util = require('../common/util')
 const send = require('koa-send')
@@ -94,7 +94,7 @@ exports.download = async function(ctx, name) {
 
 exports.delete = async function(ctx) {
   ctx.body = await handleFiles(ctx, async (fullpath) => {
-    await util.rm_rf(fullpath)
+    await fs.remove(fullpath)
   })
 }
 
@@ -142,6 +142,26 @@ exports.new = async function(ctx) {
   }
 }
 
+exports.move = async function(ctx) {
+  try {
+    const referer = ctx.request.header.referer
+    if (referer && referer.length) {
+      let frompath = ctx.request.body.frompath
+      const name = ctx.request.body.name
+      if (frompath && frompath.length && name && name.length) {
+        frompath = path.join(downloadDir, frompath)
+        const topath = path.join(downloadDir, name)
+        await fs.move(decodeURIComponent(frompath), decodeURIComponent(topath))
+      }
+      ctx.redirect(referer)
+    } else {
+      ctx.body = { error: 'referer error' }  
+    }
+  } catch (err) {
+    ctx.body = { error: err }
+  }
+}
+
 exports.rename = async function(ctx) {
   try {
     const referer = ctx.request.header.referer
@@ -151,7 +171,7 @@ exports.rename = async function(ctx) {
       if (frompath && frompath.length && name && name.length) {
         frompath = path.join(downloadDir, frompath)
         const topath = path.join(path.dirname(frompath), name)
-        await fs.renameAsync(decodeURIComponent(frompath), decodeURIComponent(topath))
+        await fs.rename(decodeURIComponent(frompath), decodeURIComponent(topath))
       }
       ctx.redirect(referer)
     } else {
@@ -165,17 +185,17 @@ exports.rename = async function(ctx) {
 exports.main = async function(ctx) {
     const curPath = decodeURIComponent(path.join(downloadDir, ctx.path))
     console.log(curPath)
-    const curStat = await fs.lstatAsync(curPath)
+    const curStat = await fs.lstat(curPath)
     if (curStat.isFile()) {
       console.log('download', ctx.path)
       const sendpath = decodeURIComponent(ctx.path)
       ctx.attachment(sendpath)
       await send(ctx, sendpath, { root: downloadDir })
     } else if (curStat.isDirectory()) {
-      const nameList = await fs.readdirAsync(curPath)
+      const nameList = await fs.readdir(curPath)
       const files = []
       for (const name of nameList) {
-        const stat = await fs.lstatAsync(path.join(curPath, name))
+        const stat = await fs.lstat(path.join(curPath, name))
         if (stat.isFile() || stat.isDirectory()) {
           files.push({
             name: name,

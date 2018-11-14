@@ -1,5 +1,3 @@
-const rimraf = require('rimraf')
-const fs = require('fs')
 
 exports.sizeFormat = function(size) {
     let str = ''
@@ -15,14 +13,3 @@ exports.sizeFormat = function(size) {
     return str
 }
 
-exports.rm_rf = async function(path) {
-    return new Promise((resolve, reject) => {
-        rimraf(path, function(err) {
-            if (err) {
-                reject(err)
-            } else {
-                resolve()
-            }
-        })
-    })
-}
