@@ -2,6 +2,16 @@
 <% include uploadModal.html %>
 <% include newModal.html %>
 <div class="container row" style="margin-top: 60px; margin-bottom: 10px;">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle default-sort" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= sort.defaultSort %>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <% sort.list.forEach(function(item) { %>
+          <a class="dropdown-item sort-item" href="<%= item.href %>"><%= item.name %></a>
+        <% }) %>
+      </div>
+    </div>
     <div class="col-auto mr-auto">
         <button type="button" class="btn btn-secondary" id="download">Download</button>
         <button type="button" class="btn btn-danger" id="delete">Delete</button>

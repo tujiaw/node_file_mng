@@ -37,6 +37,50 @@ async function promisePipe(reader, writer) {
   })
 }
 
+class FileSort {
+  constructor() {
+    this.defaultSort = 'Default sort'
+    this.list = [
+      { type: 'type', name: 'Type sort' },
+      { type: 'name', name: 'Name sort' },
+      { type: 'size', name: 'Size sort' },
+      { type: 'time', name: 'Time sort' },
+    ]
+  }
+
+  getShowData(path, sort, order) {
+    const result = {
+      defaultSort: '',
+      list: []
+    }
+    for (const item of this.list) {
+      if (item.type === sort) {
+        result.defaultSort = item.name
+      }
+      result.list.push({
+        name: item.name,
+        href: path + '?s=' + item.type + ((order && order.length) ? ('&o=' + order) : '')
+      })
+    }
+    if (result.defaultSort.length === 0) {
+      result.defaultSort = this.defaultSort
+    }
+    return result
+  }
+
+  sort(files, type, order) {
+    if (type === 'type') {
+      files.sort((a, b) => { return order==='asc' ? (a.type > b.type) : (a.type < b.type) })
+    } else if (type === 'name') {
+      files.sort((a, b) => { return order==='asc' ? (a.name > b.name) : (a.name < b.name) })
+    } else if (type === 'size') {
+      files.sort((a, b) => { return order==='asc' ? (a.byte > b.byte) : (a.byte < b.byte) })
+    } else if (type === 'time') {
+      files.sort((a, b) => { return order==='asc' ? (a.time > b.time) : (a.time < b.time) })
+    }
+  }
+}
+
 exports.download = async function(ctx, name) {
   console.log(name)
   if (name && name.length) {
@@ -65,7 +109,7 @@ exports.upload = async function(ctx) {
         fileList.push(ctx.request.files.file)
       }
       for (const file of fileList) {
-        const dstPath = path.join(downloadDir, url.parse(referer).path, file.name)
+        const dstPath = path.join(downloadDir, url.parse(referer).pathname, file.name)
         console.log(`upload from:${file.path}, to:${dstPath}`)
         const reader = fs.createReadStream(decodeURIComponent(file.path))
         const stream = fs.createWriteStream(decodeURIComponent(dstPath))
@@ -86,7 +130,7 @@ exports.new = async function(ctx) {
     if (referer && referer.length) {
       const name = ctx.request.body.name
       if (name && name.length) {
-        const dstPath = path.join(downloadDir, url.parse(referer).path, name)
+        const dstPath = path.join(downloadDir, url.parse(referer).pathname, name)
         await fs.mkdirSync(decodeURIComponent(dstPath))
       }
       ctx.redirect(referer)
@@ -138,6 +182,7 @@ exports.main = async function(ctx) {
             path: decodeURIComponent(path.join(ctx.path, name)),
             type: stat.isFile() ? "oi-document" : "oi-folder",
             isDir: stat.isDirectory(),
+            byte: stat.size,
             size: util.sizeFormat(stat.size),
             time: moment(stat.mtime).format('YYYY-MM-DD HH:mm:ss')
           })
@@ -145,15 +190,21 @@ exports.main = async function(ctx) {
       }
   
       const pathList = ctx.path.split('/')
-      let s = ''
       const nav = [{ path: '/', name: 'Home' }]
+      let s = ''
       for (const path of pathList) {
         if (path.length) {
           s += '/' + path
           nav.push({ path: s, name: path })
         }
       }
-      await ctx.render('index', { nav, files })
+
+      const curSort = ctx.request.query.s || ''
+      const curOrder = ctx.request.query.o || 'asc'
+      const filesort = new FileSort()
+      filesort.sort(files, curSort, curOrder)
+      const sort = filesort.getShowData(ctx.path, curSort, curOrder)
+      await ctx.render('index', { sort, nav, files })
     } else {
       ctx.body = '404'
     }

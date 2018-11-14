@@ -65,19 +65,21 @@ $('#download').click(function() {
 })
 
 $('#delete').click(function() {
-    const selectFiles = getSelectFiles()
-    if (selectFiles.length) {
-        fetch('/delete', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(selectFiles)
-        }).then(function() {
-            location.reload()
-        }).catch(function(err) {
-            alert(err)
-        })
+    if (confirm('确定要删除选中的文件吗？')) {
+        const selectFiles = getSelectFiles()
+        if (selectFiles.length) {
+            fetch('/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectFiles)
+            }).then(function() {
+                location.reload()
+            }).catch(function(err) {
+                alert(err)
+            })
+        }
     }
 })
 
@@ -88,4 +90,17 @@ $('#rename').click(function() {
     return true
 })
 
-$('.referrer').val(document.referrer);
+$('.sort-item').click(function() {
+    const defaultSort = $('.default-sort').text().trim();
+    const curSort = $(this).text().trim()
+    if (defaultSort == curSort) {
+        let url = $(this).attr('href').toLowerCase()
+        if (url.includes('o=desc')) {
+            $(this).attr('href', url.replace("o=desc", 'o=asc'))
+        } else if (url.includes('o=asc')) {
+            $(this).attr('href', url.replace("o=asc", 'o=desc'))
+        }
+    }
+    return true
+})
+$('.referrer').val(document.URL);

@@ -6,11 +6,11 @@ exports.sizeFormat = function(size) {
     if (size < 1024) {
         str = size + 'B'
     } else if (size < 1024 * 1024) {
-        str = parseInt(size / 1024) + 'KB'
+        str = (size / 1024).toFixed(2) + 'KB'
     } else if (size < 1024 * 1024 * 1024) {
-        str = parseInt(size / 1024 / 1024) + 'MB'
+        str = (size / 1024 / 1024).toFixed(2) + 'MB'
     } else {
-        str = parseInt(size / 1024 / 1024 / 1024) + 'GB'
+        str = (size / 1024 / 1024 / 1024).toFixed(2) + 'GB'
     }
     return str
 }
