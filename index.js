@@ -7,7 +7,13 @@ const app = new Koa()
 const router = new Router()
 const controller = require('./controller')
 
-app.use(body({ multipart: true }))
+app.use(body({ 
+  multipart: true, 
+  formidable: {
+    maxFileSize: 10 * 1024 * 1024 * 1024
+  }
+}))
+
 render(app, {
   root: path.join(__dirname, 'view'),
   layout: 'template',

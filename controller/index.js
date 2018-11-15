@@ -6,6 +6,8 @@ const send = require('koa-send')
 const url = require('url');
 
 const downloadDir = path.join(__dirname, '..', 'download')
+fs.existsSync(downloadDir) || fs.mkdir(downloadDir)
+console.log('download dir:' + downloadDir)
 
 async function handleFiles(ctx, handlder) {
   const files = ctx.request.body
