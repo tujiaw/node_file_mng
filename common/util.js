@@ -39,3 +39,16 @@ exports.archiveList = function(pathList, zipName) {
         archive.finalize()  
     })
 }
+
+exports.promisePipe = async function(reader, writer) {
+    return new Promise((resolve, reject) => {
+      try {
+        reader.pipe(writer)
+        reader.on('end', () => {
+          resolve()
+        })
+      } catch (err) {
+        reject(err)
+      }
+    })
+}

@@ -24,6 +24,7 @@ render(app, {
 
 const publicDir = path.join(__dirname, 'public')
 app.use(require('koa-static')(publicDir))
+app.use(controller.startRoute)
 router.post('/delete', controller.delete)
 router.post('/upload', controller.upload)
 router.post('/new', controller.new)
