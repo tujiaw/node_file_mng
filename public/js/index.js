@@ -130,5 +130,4 @@
   $('#uploadOk').click(function () {
     $('#uploadSubmit').click()
   })
-  $('.referrer').val(document.URL);
 })(jQuery, window, window.document);
