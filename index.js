@@ -10,7 +10,7 @@ const controller = require('./controller')
 app.use(body({ 
   multipart: true, 
   formidable: {
-    maxFileSize: 10 * 1024 * 1024 * 1024
+    maxFileSize: 1024 * 1024 * 1024
   }
 }))
 
@@ -28,7 +28,7 @@ router.post('/delete', controller.delete)
 router.post('/upload', controller.upload)
 router.post('/new', controller.new)
 router.post('/move', controller.move)
-router.post('/rename', controller.rename)
+router.post('/archive', controller.archive)
 app.use(router.routes()).use(router.allowedMethods())
 app.use(controller.main)
 

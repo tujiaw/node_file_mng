@@ -13,8 +13,8 @@ function updateButtonsStatus() {
     })
     $('#download').prop('disabled', dirCount > 0 || fileCount === 0)
     $('#delete').prop('disabled', dirCount === 0 && fileCount === 0)
-    $('#rename').prop('disabled', (dirCount + fileCount) !== 1)
     $('#move').prop('disabled', (dirCount + fileCount) !== 1)
+    $('#archive').prop('disabled', dirCount === 0 && fileCount === 0)
 }
 
 $('.selectAll').change(function() {
@@ -110,4 +110,14 @@ $('.sort-item').click(function() {
     }
     return true
 })
+
+$('#archive').click(function() {
+    $('#pathlist').val(JSON.stringify( getSelectFiles() ))
+    $('#archiveInput').val('files-' + new Date().toISOString().replace(/:/g, '') + '.zip')
+    return true
+})
+$('#archiveOk').click(function() { $('#archiveSubmit').click() })
+$('#moveOk').click(function() { $('#moveSubmit').click() })
+$('#newOk').click(function() { $('#newSubmit').click() })
+$('#uploadOk').click(function() { $('#uploadSubmit').click() })
 $('.referrer').val(document.URL);

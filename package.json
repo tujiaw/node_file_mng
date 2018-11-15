@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/tujiaw/node_file_mng#readme",
   "dependencies": {
+    "archiver": "^3.0.0",
     "fs-extra": "^7.0.1",
     "koa": "^2.6.2",
     "koa-body": "^4.0.4",
@@ -26,6 +27,7 @@
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "uuid": "^3.3.2"
   }
 }

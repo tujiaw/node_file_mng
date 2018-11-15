@@ -1,3 +1,6 @@
+const archiver = require('archiver')
+const fs = require('fs')
+const path = require('path')
 
 exports.sizeFormat = function(size) {
     let str = ''
@@ -13,3 +16,26 @@ exports.sizeFormat = function(size) {
     return str
 }
 
+exports.archiveList = function(pathList, zipName) {
+    return new Promise((resolve, reject) => {
+        const archive = archiver('zip', { zlib: { level: 6 }})
+        archive.on('end', function() {
+            resolve()
+        })
+        archive.on('error', function(err) {
+            reject(err)
+        })
+    
+        var output = fs.createWriteStream(zipName)
+        archive.pipe(output)
+        for (const str of pathList) {
+            const stat = fs.lstatSync(str)
+            if (stat.isFile()) {
+                archive.file(str, { name: path.parse(str).base })
+            } else if (stat.isDirectory()) {
+                archive.directory(str, path.parse(str).name )
+            }
+        }
+        archive.finalize()  
+    })
+}

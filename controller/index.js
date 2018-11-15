@@ -4,6 +4,7 @@ const moment = require('moment')
 const util = require('../common/util')
 const send = require('koa-send')
 const url = require('url');
+const uuidV1 = require('uuid/v1');
 
 const downloadDir = path.join(__dirname, '..', 'download')
 fs.existsSync(downloadDir) || fs.mkdir(downloadDir)
@@ -136,7 +137,7 @@ exports.upload = async function(ctx) {
       ctx.body = { error: 'referer error' }  
     }
   } catch (err) {
-    ctx.body = { error: err }
+    ctx.body = err
   }
 }
 
@@ -154,7 +155,7 @@ exports.new = async function(ctx) {
       ctx.body = { error: 'referer error' }  
     }
   } catch (err) {
-    ctx.body = { error: err }
+    ctx.body = err
   }
 }
 
@@ -174,27 +175,32 @@ exports.move = async function(ctx) {
       ctx.body = { error: 'referer error' }  
     }
   } catch (err) {
-    ctx.body = { error: err }
+    ctx.body = err
   }
 }
 
-exports.rename = async function(ctx) {
+exports.archive = async function(ctx) {
   try {
     const referer = ctx.request.header.referer
     if (referer && referer.length) {
-      let frompath = ctx.request.body.frompath
+      let pathlist = ctx.request.body.pathlist
       const name = ctx.request.body.name
-      if (frompath && frompath.length && name && name.length) {
-        frompath = path.join(downloadDir, frompath)
-        const topath = path.join(path.dirname(frompath), name)
-        await fs.rename(decodeURIComponent(frompath), decodeURIComponent(topath))
+      if (pathlist && pathlist.length && name && name.length) {
+        pathlist = JSON.parse(pathlist)
+        pathlist = pathlist.map((str) => {
+          return path.join(downloadDir, str)
+        })
+        const randomdir = path.join(__dirname, '../temp', uuidV1())
+        fs.mkdirpSync(randomdir)
+        await util.archiveList(pathlist, path.join(randomdir, name))
+        ctx.attachment(name)
+        await send(ctx, name, { root: randomdir })
       }
-      ctx.redirect(referer)
     } else {
       ctx.body = { error: 'referer error' }  
     }
   } catch (err) {
-    ctx.body = { error: err }
+    ctx.body = err
   }
 }
 

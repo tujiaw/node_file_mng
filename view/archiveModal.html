@@ -1,0 +1,29 @@
+<!-- Modal -->
+<div class="modal fade" id="archiveModal" tabindex="-1" role="dialog" aria-labelledby="archiveModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="archiveModalLabel">Archive</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/archive" method="post" enctype="multipart/form-data">
+          <p>just a moment...</p>
+          <input class="referrer" type="text" name="referrer" class="form-control" style="display:none;">
+          <input id="pathlist" type="text" name="pathlist" class="form-control" style="display:none;">
+          <div class="container row">
+            <input id="archiveInput" type="text" class="form-control" name="name">
+            <input id="archiveSubmit" type="submit" class="form-control" value="Ok" style="display:none;">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="archiveOk" type="button" class="btn btn-primary" data-dismiss="modal">Archive</button>
+      </div>
+    </div>
+  </div>
+</div>
+

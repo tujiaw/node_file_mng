@@ -11,12 +11,13 @@
       <div class="modal-body">
         <form action="/upload" method="post" enctype="multipart/form-data">
           <input class="referrer" type="text" name="referrer" class="form-control" style="display:none;">
-          <input type="file" name="file" multiple>
-          <input type="submit" value="Upload">
+          <input type="file" name="file" class="form-control" multiple>
+          <input id="uploadSubmit" type="submit" value="Upload" style="display:none;">
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="uploadOk" type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
       </div>
     </div>
   </div>
