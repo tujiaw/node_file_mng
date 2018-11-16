@@ -23,14 +23,17 @@ exports.archiveList = function (pathList, zipName) {
         level: 6
       }
     })
-    archive.on('end', function () {
+    var output = fs.createWriteStream(zipName)
+    output.on('close', function() {
       resolve()
+    })
+    archive.on('end', function () {
+      // 不能用end，否则浏览器下载的文件不全
     })
     archive.on('error', function (err) {
       reject(err)
     })
 
-    var output = fs.createWriteStream(zipName)
     archive.pipe(output)
     for (const str of pathList) {
       const stat = fs.lstatSync(str)

@@ -20,12 +20,15 @@
 
 <body>
   <h4 id="logo">File Manager</h4>
+  <div class="forkgithub">
+    <a target="_bank" href="https://github.com/tujiaw/node_file_mng"></a>
+  </div>
   <% include moveModal.html %>
   <% include archiveModal.html %>
   <% include uploadModal.html %>
   <% include newModal.html %>
-  <% include nav.html %>
-  <main class="container">
+  <main>
+    <% include header.html %>
     <%- body %>
   </main><!-- /.container -->
 
