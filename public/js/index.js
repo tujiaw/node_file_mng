@@ -58,11 +58,15 @@
 
   $('#download').click(function () {
     const spanList = []
+    let i = 1
     $('.file-row').each(function () {
       if ($(this).find('input').is(':checked')) {
-        spanList.push($(this).find('a>span'))
-        const url = $(this).find('a').attr('href')
-        download(url)
+        const downloadUrl = function(index, obj) {
+          setTimeout(function() {
+            obj.trigger('click')
+          }, index * 100)
+        }
+        downloadUrl(i++, $(this).find('a span'))
       }
     })
   })

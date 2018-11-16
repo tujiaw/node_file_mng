@@ -22,8 +22,10 @@
             <div class="table-type-item">
               <span class="oi <%= file.type %>" title="<%= file.type %>" aria-hidden="true" style="margin-left:10px;"></span>
             </div>
-            <div class="table-name-item"><a href="<%= file.path %>">
-              <%= file.name %></a>
+            <div class="table-name-item">
+              <a href="<%= file.path %>">
+                <span><%= file.name %></span>
+              </a>
             </div>
           </div>
           <div class="d-flex justify-content-end">
