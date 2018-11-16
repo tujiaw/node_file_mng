@@ -7,8 +7,8 @@ const app = new Koa()
 const router = new Router()
 const controller = require('./controller')
 
-app.use(body({ 
-  multipart: true, 
+app.use(body({
+  multipart: true,
   formidable: {
     maxFileSize: 1024 * 1024 * 1024
   }

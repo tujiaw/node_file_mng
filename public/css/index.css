@@ -1,34 +1,33 @@
 #logo {
-    position: fixed;
-    right: 30px;
-    top: 10px;
-    z-index: 100000;
-    color: grey;
+  position: fixed;
+  right: 30px;
+  top: 10px;
+  z-index: 100000;
+  color: grey;
 }
 
 .table-check-item {
-    width: 30px;
+  width: 30px;
 }
 
 .table-type-item {
-    width: 50px;
+  width: 50px;
 }
 
 .table-size-item {
-    width: 90px;
+  width: 90px;
 }
 
 .table-time-item {
-    width: 160px;
+  width: 160px;
 }
 
 .fixed-top {
-    background:#fff;
-    padding-bottom: 10px;
-    margin-left:
+  background: #fff;
+  padding-bottom: 10px;
 }
 
 .list-container {
-    margin-top: 120px; 
-    margin-bottom: 10px;
+  margin-top: 120px;
+  margin-bottom: 10px;
 }

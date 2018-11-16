@@ -9,10 +9,10 @@
   </nav>
   <div class="container d-flex justify-content-between">
     <div class="buttons-left">
-        <button type="button" class="btn btn-secondary" id="download">Download</button>
-        <button type="button" class="btn btn-danger" id="delete">Delete</button>
-        <button type="button" class="btn btn-secondary" id="move" data-toggle="modal" data-target="#moveModal">Move</button>
-        <button type="button" class="btn btn-secondary" id="archive" data-toggle="modal" data-target="#archiveModal">Archive</button>
+      <button type="button" class="btn btn-secondary" id="download">Download</button>
+      <button type="button" class="btn btn-danger" id="delete">Delete</button>
+      <button type="button" class="btn btn-secondary" id="move" data-toggle="modal" data-target="#moveModal">Move</button>
+      <button type="button" class="btn btn-secondary" id="archive" data-toggle="modal" data-target="#archiveModal">Archive</button>
     </div>
     <div class="d-flex buttons-right">
       <div class="container">
@@ -20,12 +20,14 @@
         <button type="button" class="btn btn-primary" id="new" data-toggle="modal" data-target="#newModal">New Folder</button>
       </div>
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle default-sort" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle default-sort" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <%= sort.defaultSort %>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <% sort.list.forEach(function(item) { %>
-            <a class="dropdown-item sort-item" href="<%= item.href %>"><%= item.name %></a>
+          <a class="dropdown-item sort-item" href="<%= item.href %>">
+            <%= item.name %></a>
           <% }) %>
         </div>
       </div>
