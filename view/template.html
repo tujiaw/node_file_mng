@@ -7,7 +7,6 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="/favicon.ico">
-
   <title>Files Manager</title>
 
   <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -20,12 +19,13 @@
 </head>
 
 <body>
+  <h4 id="logo">File Manager</h4>
   <% include moveModal.html %>
   <% include archiveModal.html %>
   <% include uploadModal.html %>
   <% include newModal.html %>
   <% include nav.html %>
-  <main role="main" class="container">
+  <main class="container">
     <%- body %>
   </main><!-- /.container -->
 

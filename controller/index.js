@@ -32,8 +32,13 @@ exports.startRoute = async function(ctx, next) {
   try {
     await next()
   } catch (err) {
-    ctx.response.status = err.statusCode || err.status || 500
-    ctx.response.body = err
+    if (err.errno === -4058) {
+      ctx.response.status = 404
+      ctx.response.body = 404
+    } else {
+      ctx.response.status = err.statusCode || err.status || 500
+      ctx.response.body = err
+    }
     ctx.app.emit('error', err, ctx)
   }
 }
@@ -155,6 +160,6 @@ exports.main = async function(ctx) {
       const sort = filesort.getShowData(ctx.path, curSort, curOrder)
       await ctx.render('index', { sort, nav, files })
     } else {
-      ctx.body = '404'
+      ctx.redirect('/')
     }
 }

@@ -1,3 +1,11 @@
+#logo {
+    position: fixed;
+    right: 30px;
+    top: 10px;
+    z-index: 100000;
+    color: grey;
+}
+
 .table-check-item {
     width: 30px;
 }
@@ -17,6 +25,7 @@
 .fixed-top {
     background:#fff;
     padding-bottom: 10px;
+    margin-left:
 }
 
 .list-container {
