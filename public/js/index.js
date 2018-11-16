@@ -39,34 +39,21 @@
     return selectFiles
   }
 
-  function download(url) {
-    let start = url.lastIndexOf('\\')
-    start = start < 0 ? url.lastIndexOf('/') : start
-    const name = url.substr(start + 1)
-    fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = name;
-        document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
-        a.click();
-        a.remove(); //afterwards we remove the element again 
-      })
+  function download(name, url) {
+    var aDom = document.createElement('a')
+    var evt = document.createEvent('HTMLEvents')
+    evt.initEvent('click', false, false)
+    aDom.download = name
+    aDom.href = url
+    aDom.dispatchEvent(evt)
+    aDom.click()
   }
 
   $('#download').click(function () {
-    const spanList = []
-    let i = 1
     $('.file-row').each(function () {
       if ($(this).find('input').is(':checked')) {
-        const downloadUrl = function(index, obj) {
-          setTimeout(function() {
-            obj.trigger('click')
-          }, index * 100)
-        }
-        downloadUrl(i++, $(this).find('a span'))
+        const a = $(this).find('a')
+        download(a.text(), a.attr('href'))
       }
     })
   })
