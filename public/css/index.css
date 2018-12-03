@@ -44,6 +44,10 @@ html, body {
   background: url(/img/forkgithub.png) 14px -15px no-repeat;
 }
 
+.buttons-right .dropdown {
+  z-index: 10001;
+}
+
 .forkgithub a {
   display: block;
   width: 149px;
