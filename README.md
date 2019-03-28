@@ -1,3 +1,6 @@
+效果图：
+![node_file_mng](node_file_mng.png)
+
 # 文件管理
 通过浏览器很方便的对远程文件进行管理
 
