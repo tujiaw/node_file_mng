@@ -38,6 +38,7 @@ exports.startRoute = async function(ctx, next) {
     } else {
       ctx.response.status = err.statusCode || err.status || 500
       ctx.response.body = err
+      console.log('error:' + err)
     }
     ctx.app.emit('error', err, ctx)
   }
@@ -68,6 +69,7 @@ exports.upload = async function(ctx) {
   } else {
     fileList.push(ctx.request.files.file)
   }
+
   for (const file of fileList) {
     const dstPath = path.join(downloadDir, url.parse(referer).pathname, file.name)
     console.log(`upload from:${file.path}, to:${dstPath}`)
@@ -108,6 +110,7 @@ exports.archive = async function(ctx) {
     pathlist = pathlist.map((str) => {
       return path.join(downloadDir, str)
     })
+
     const randomdir = path.join(__dirname, '../temp', uuidV1())
     fs.mkdirpSync(randomdir)
     await util.archiveList(pathlist, path.join(randomdir, name))

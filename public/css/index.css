@@ -55,7 +55,14 @@ html, body {
 }
 
 header {
+  padding-top: 70px;
   padding-bottom: 20px;
+}
+
+.breadcrumb {
+    background:transparent;
+    /* padding: 0; */
+    margin: 0;
 }
 
 .content {

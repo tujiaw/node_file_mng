@@ -25,12 +25,12 @@ render(app, {
 const publicDir = path.join(__dirname, 'public')
 app.use(require('koa-static')(publicDir))
 app.use(controller.startRoute)
+app.use(router.routes()).use(router.allowedMethods())
 router.post('/delete', controller.delete)
 router.post('/upload', controller.upload)
 router.post('/new', controller.new)
 router.post('/move', controller.move)
 router.post('/archive', controller.archive)
-app.use(router.routes()).use(router.allowedMethods())
 app.use(controller.main)
 
 const port = 5000;
