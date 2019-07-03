@@ -1,3 +1,5 @@
+demo中会禁用掉删除和移动操作
+
 效果图：
 ![node_file_mng](node_file_mng.png)
 
