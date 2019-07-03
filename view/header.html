@@ -11,20 +11,6 @@
         <button type="button" class="btn btn-primary" id="upload" data-toggle="modal" data-target="#uploadModal">Upload</button>
         <button type="button" class="btn btn-primary" id="new" data-toggle="modal" data-target="#newModal">New Folder</button>
       </div>
-      <% if (sort) { %>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle default-sort" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= sort.defaultSort %>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <% sort.list.forEach(function(item) { %>
-                <a class="dropdown-item sort-item" href="<%= item.href %>">
-                <%= item.name %></a>
-                <% }) %>
-            </div>
-        </div>
-      <% } %>
     </div>
   </div>
 </header>
