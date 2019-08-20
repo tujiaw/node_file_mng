@@ -3,6 +3,23 @@ demo中会禁用掉删除和移动操作
 效果图：
 ![node_file_mng](node_file_mng.png)
 
+启动
+```
+npm start
+```
+
+dev使用nodemon启动
+```
+npm install -g  nodemon
+npm run dev
+```
+
+部署使用pm2
+```
+npm install pm2 -g 
+npm run deploy
+```
+
 # 文件管理
 通过浏览器很方便的对远程文件进行管理
 
