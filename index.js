@@ -37,7 +37,7 @@ router.post('/move', controller.move)
 router.get('/ningto', controller.ningto)
 app.use(controller.main)
 
-const port = 5000;
+const port = 5683;
 app.listen(port, () => {
   console.log(`starting at port ${port}`)
 })
