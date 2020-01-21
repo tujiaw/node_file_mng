@@ -6,7 +6,10 @@ const path = require('path')
 const app = new Koa()
 const router = new Router()
 const controller = require('./controller')
+const session = require('koa-session');
 
+app.keys = ['HELLO, world!'];
+app.use(session(app));
 app.use(body({
   multipart: true,
   formidable: {
@@ -31,6 +34,7 @@ router.post('/new', controller.new)
 router.post('/archive', controller.archive)
 router.post('/delete', controller.delete)
 router.post('/move', controller.move)
+router.get('/ningto', controller.ningto)
 app.use(controller.main)
 
 const port = 5000;

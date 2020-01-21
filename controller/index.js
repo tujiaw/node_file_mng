@@ -28,7 +28,15 @@ async function handleFiles(ctx, handlder) {
   }
 }
 
+const AUTH_LIST = ['/delete', '/new', '/archive', '/move', '/upload']
 exports.startRoute = async function(ctx, next) {
+  console.log('method:', ctx.method, ', path:', ctx.path)
+  if (!ctx.session.isAdmin && ctx.method === 'POST' && AUTH_LIST.includes(ctx.path)) {
+    ctx.response.status = 500
+    ctx.response.body = JSON.stringify({err : 'You are not an administrator!'})
+    return
+  }
+
   try {
     await next()
   } catch (err) {
@@ -42,6 +50,9 @@ exports.startRoute = async function(ctx, next) {
     }
     ctx.app.emit('error', err, ctx)
   }
+}
+exports.userAuth = async function(fn) {
+  return fn
 }
 
 exports.download = async function(ctx, name) {
@@ -119,6 +130,11 @@ exports.archive = async function(ctx) {
   }
 }
 
+exports.ningto = async function(ctx) {
+  ctx.session.isAdmin = ctx.session.isAdmin ? null : 1
+  ctx.redirect('/')
+}
+
 exports.main = async function(ctx) {
     const curPath = decodeURIComponent(path.join(downloadDir, ctx.path))
     console.log(curPath)
@@ -147,7 +163,9 @@ exports.main = async function(ctx) {
       }
   
       const pathList = ctx.path.split('/')
-      const nav = [{ path: '/', name: 'Home' }]
+      const isAdmin = ctx.session.isAdmin
+      const rootName = isAdmin ? "Root" : "Home"
+      const nav = [{ path: '/', name: rootName }]
       let s = ''
       for (const path of pathList) {
         if (path.length) {
@@ -161,7 +179,7 @@ exports.main = async function(ctx) {
       const filesort = new FileSort()
       filesort.sort(files, curSort, curOrder)
       const sort = filesort.getShowData(ctx.path, curSort, curOrder)
-      await ctx.render('index', { sort, nav, files })
+      await ctx.render('index', { sort, nav, files, isAdmin })
     } else {
       ctx.redirect('/')
     }
